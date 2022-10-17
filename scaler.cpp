@@ -4,6 +4,25 @@
 
 ConsoleGfx *cg = ConsoleGfx::getInstance();
 Image image = Image(nullptr);
+
+bool menu();
+unsigned char* scaledImage(unsigned char *imageData, int order);
+
+int main()
+{
+    std::cout << "Welcome to the Image Scaler!" << std::endl;
+    std::cout << "Displaying Spectrum Image:" << std::endl;
+    cg->displayImage(cg->testRainbow);
+
+    bool run = true;
+    while(run)
+    {
+        run = menu();
+    }
+
+    return 0;
+}
+
 bool menu()
 {
     std::cout<< std::endl << std::endl;
@@ -18,7 +37,7 @@ bool menu()
     std::cout<< "6. Show Image Properties" << std::endl;
 
     int selection;
-    std::cout<< "Select a menu option: ";
+    std::cout<< std::endl<< "Select a menu option: ";
     std::cin>> selection;
 
     switch (selection)
@@ -53,22 +72,40 @@ bool menu()
             }
             break;
         }
+        case 4:
+        {
+            int order;
+            std::cout<<"Enter orders of magnitude for enlargement: ";
+            std::cin>> order;
+            std::cout<<std::endl;
+
+            scaledImage(image.getImageData(), order);
+
+            std::cout<<"Image enlarged!"<< std::endl;
+        }
+        case 5:
+        {
+            int order;
+            std::cout<<"Enter orders of magnitude for reduction: ";
+            std::cin>> order;
+            order = 1/order;
+            std::cout<<std::endl;
+
+            scaledImage(image.getImageData(), order);
+
+            std::cout<<"Image reduced!"<< std::endl;
+        }
+        case 6:
+        {
+            std::cout<<"Image Dimensions: (" << int(image.getWidth())<<", "<<int(image.getHeight())<< ")"<<std::endl;
+        }
     }
     
     return true;
 }
 
-int main()
+unsigned char* scaledImage(unsigned char *imageData, int order)
 {
-    std::cout << "Welcome to the Image Scaler!" << std::endl;
-    std::cout << "Displaying Spectrum Image:" << std::endl;
-    cg->displayImage(cg->testRainbow);
-
-    bool run = true;
-    while(run)
-    {
-        run = menu();
-    }
-
-    return 0;
+    unsigned char* scaledImageData = nullptr;
+    return scaledImageData;
 }
