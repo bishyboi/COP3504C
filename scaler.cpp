@@ -95,7 +95,7 @@ bool menu()
         order *= -1;
         std::cout << std::endl;
 
-        scaledImage(image.getImageData(), order);
+        image.setImageData(scaledImage(image.getImageData(), order));
 
         std::cout << "Image reduced!" << std::endl;
         break;
@@ -111,7 +111,7 @@ bool menu()
 
 }
 
-unsigned char *scaledImage(unsigned char *imageData, int order)
+unsigned char* xscaledImage(unsigned char *imageData, int order)
 {
     // Stores the original image
     Image image = Image(imageData);
@@ -170,7 +170,7 @@ unsigned char *scaledImage(unsigned char *imageData, int order)
                 for (int l=0; l<scaleFactor; l++)
                 {
                     //+2 to account for the first two indices storing height and width
-                    scaledImageData[(scaleFactor*i) +(i*scaleFactor*(j+l))+2 + k] = *(image.getPixelData() + imageHeight*i + j);
+                    scaledImageData[(imageWidth*scaleFactor)*(scaleFactor*j+l)+(i*scaleFactor)+k + 2] = *(image.getPixelData() + (imageWidth*(j+l)+i+k));
                 }
             }
         }
