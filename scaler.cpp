@@ -44,74 +44,73 @@ bool menu()
     std::cin >> selection;
 
     switch (selection)
-    {
-    case 0:
-    {
-        return false;
-    }
-    case 1:
-    {
-        std::string fileName;
-
-        std::cout << "Enter name of file to load: ";
-        std::cin >> fileName;
-        std::cout << std::endl;
-
-        image.setImageData(cg->loadFile(fileName));
-        break;
-    }
-    case 2:
-    {
-        image.setImageData(cg->testImage);
-        break;
-    }
-    case 3:
-    {
-        if (image.getImageData() == nullptr)
-            std::cout << "Error: no image loaded";
-        else
         {
-            cg->displayImage(image.getImageData());
+        case 0:
+        {
+            return false;
         }
-        break;
-    }
-    case 4:
-    {
-        int order;
-        std::cout << "Enter orders of magnitude for enlargement: ";
-        std::cin >> order;
-        std::cout << std::endl;
+        case 1:
+        {
+            std::string fileName;
 
-        image.setImageData(scaledImage(image.getImageData(), order));
+            std::cout << "Enter name of file to load: ";
+            std::cin >> fileName;
+            std::cout << std::endl;
 
-        std::cout << "Image enlarged!" << std::endl;
-        break;
-    }
-    case 5:
-    {
-        int order;
-        std::cout << "Enter orders of magnitude for reduction: ";
-        std::cin >> order;
-        order *= -1;
-        std::cout << std::endl;
+            image.setImageData(cg->loadFile(fileName));
+            break;
+        }
+        case 2:
+        {
+            image.setImageData(cg->testImage);
+            break;
+        }
+        case 3:
+        {
+            if (image.getImageData() == nullptr)
+                std::cout << "Error: no image loaded";
+            else
+            {
+                cg->displayImage(image.getImageData());
+            }
+            break;
+        }
+        case 4:
+        {
+            int order;
+            std::cout << "Enter orders of magnitude for enlargement: ";
+            std::cin >> order;
+            std::cout << std::endl;
 
-        image.setImageData(scaledImage(image.getImageData(), order));
+            image.setImageData(scaledImage(image.getImageData(), order));
 
-        std::cout << "Image reduced!" << std::endl;
-        break;
-    }
-    case 6:
-    {
-        std::cout << "Image Dimensions: (" << int(image.getWidth()) << ", " << int(image.getHeight()) << ")" << std::endl;
-        break;
-    }
+            std::cout << "Image enlarged!" << std::endl;
+            break;
+        }
+        case 5:
+        {
+            int order;
+            std::cout << "Enter orders of magnitude for reduction: ";
+            std::cin >> order;
+            order *= -1;
+            std::cout << std::endl;
+
+            image.setImageData(scaledImage(image.getImageData(), order));
+
+            std::cout << "Image reduced!" << std::endl;
+            break;
+        }
+        case 6:
+        {
+            std::cout << "Image Dimensions: (" << int(image.getWidth()) << ", " << int(image.getHeight()) << ")" << std::endl;
+            break;
+        }
     }
 
     return true;
-
 }
 
-unsigned char* xscaledImage(unsigned char *imageData, int order)
+unsigned char* scaledImage(unsigned char *imageData, int order)
 {
     // Stores the original image
     Image image = Image(imageData);
