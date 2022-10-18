@@ -126,6 +126,6 @@ unsigned char* scaledImage(unsigned char *imageData, int order)
         scaleFactor = std::pow(2,adjustedOrder);
     }
 
-
+    
     return scaledImageData;
 }
