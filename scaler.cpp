@@ -39,16 +39,17 @@ bool menu()
     std::cout << "6. Show Image Properties" << std::endl;
 
     int selection;
-    std::cout << std::endl
-              << "Select a Menu Option: ";
+    std::cout << std::endl << "Select a Menu Option: ";
     std::cin >> selection;
 
     switch (selection)
-        {
+    {
+        //Exit
         case 0:
         {
             return false;
         }
+        //Load File
         case 1:
         {
             std::string fileName;
@@ -60,11 +61,13 @@ bool menu()
             image.setImageData(cg->loadFile(fileName));
             break;
         }
+        //Load Test Image
         case 2:
         {
             image.setImageData(cg->testImage);
             break;
         }
+        //Display Image
         case 3:
         {
             if (image.getImageData() == nullptr)
@@ -75,6 +78,7 @@ bool menu()
             }
             break;
         }
+        //Enlarge Image
         case 4:
         {
             int order;
@@ -87,12 +91,13 @@ bool menu()
             std::cout << "Image enlarged!" << std::endl;
             break;
         }
+        //Shrink Image
         case 5:
         {
             int order;
             std::cout << "Enter orders of magnitude for reduction: ";
             std::cin >> order;
-            order *= -1;
+            order *= -1; //Makes order negative because it will be a negative exponent
             std::cout << std::endl;
 
             image.setImageData(scaledImage(image.getImageData(), order));
@@ -100,6 +105,7 @@ bool menu()
             std::cout << "Image reduced!" << std::endl;
             break;
         }
+        //Show Image Properties
         case 6:
         {
             std::cout << "Image Dimensions: (" << int(image.getWidth()) << ", " << int(image.getHeight()) << ")" << std::endl;
@@ -115,13 +121,13 @@ unsigned char* scaledImage(unsigned char *imageData, int order)
     // Stores the original image
     Image image = Image(imageData);
 
+    int adjustedOrder = order;
     // Stores the height of the original image
     int imageHeight = int(image.getHeight());
     // Stores the width of the original image
     int imageWidth = int(image.getWidth());
-
-    int adjustedOrder = order;
-    int scaleFactor = std::pow(2, adjustedOrder);
+    int area = imageHeight*imageWidth;
+    int scaleFactor = order;
 
     // Checking to see if scaling the image will exceed the boundaries where 1<height or width <256
     while ((scaleFactor * imageHeight > 256) || (scaleFactor * imageWidth > 256) 
@@ -138,41 +144,39 @@ unsigned char* scaledImage(unsigned char *imageData, int order)
 
         scaleFactor = std::pow(2, adjustedOrder);
     }
+    scaleFactor = std::pow(2, adjustedOrder);
+
+    int scaledHeight = imageHeight*scaleFactor;
+    int scaledWidth = imageWidth*scaleFactor;
+    int scaledArea = scaledHeight*scaledWidth;
 
     /*Iterate through all pixels and multiply them by the scale factor. When we scale an image
      * x4, we create x4 of the total pixels; therefore, x4 of each individual pixel*/
 
     // Stores all the scaled Image data (including width and height)
-    unsigned char *scaledImageData = new unsigned char[imageHeight * imageWidth * scaleFactor * scaleFactor + 2];
+    unsigned char *scaledImageData = new unsigned char[scaledArea + 2];
     
-    // Add two to the size so that the first and second indices hold the height and width of the image
-    scaledImageData[0] = (unsigned char)(scaleFactor * imageWidth);
-    scaledImageData[1] = (unsigned char)(scaleFactor * imageHeight);
+    //Matches formatting of image data in Image.cpp
+    scaledImageData[0] = (scaleFactor * imageWidth);
+    scaledImageData[1] = (scaleFactor * imageHeight);
 
-    // needs to repeat for each row, so iterates for the height of the image
-    for (int i = 0; i < imageHeight; i++) 
+    std::cout<<int(scaledImageData[0])<< ", "<< int(scaledImageData[1])<<std::endl;
+
+    for (int x=0; x<imageWidth; x++)
     {
-        for (int j = 0; j < imageWidth; j++)
+        for (int y=0; y<imageHeight; y++)
         {
-            // FIXME: I really doubt this works
-
-            /*
-            Store the original pixel value scaleFactor times 
-            Ex: scaleFactor=2, then there should be two of each pixel in each row, as well as two
-            duplicates of the new scaled row 'stacked' on top of each other
-            */
-
-            //k corresponds to the height of the scaled pixel
-            for (int k=0; k<scaleFactor; k++)
+            for (int i=0; i<scaleFactor; i++)
             {
-                //l corresponds to the width of the scaled pixel
-                for (int l=0; l<scaleFactor; l++)
+                for (int j=0; j<scaleFactor; j++)
                 {
-                    //+2 to account for the first two indices storing height and width
-                    scaledImageData[(imageWidth*scaleFactor)*(scaleFactor*j+l)+(i*scaleFactor)+k + 2] = *(image.getPixelData() + (imageWidth*(j+l)+i+k));
+                    int pixelIdx = x + y*imageWidth; //Converts 2-D coordinate on original image to 1-D coordinate
+                    int scaledPixelIdx = (scaleFactor*x + i) + (scaleFactor*y + j)*(scaledWidth); //Converts 2-D scaled coordinate to 1-D scaled coordinate
+                    scaledImageData[scaledPixelIdx + 2] = imageData[pixelIdx+2]; // Add two to account for [0] and [1] storing image width and height
                 }
             }
         }
     }
+
     return scaledImageData;
 }

@@ -30,12 +30,6 @@ unsigned char Image::getHeight()
 
 void Image::setImageData(unsigned char *newData)
 {
-    //Deallocating the memory stored in original Image
-    delete this->pixelData;
-    delete this->height;
-    delete this->width;
-    delete this->imageData;
-
     this->imageData = newData;
     this->width = newData; 
     this->height= newData+1;
