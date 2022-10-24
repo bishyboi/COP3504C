@@ -6,19 +6,20 @@
 #include "IceDragon.h"
 using namespace std;
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     HeiferGenerator hg;
     vector<Cow*> cows = hg.getCows();
+    string args = *argv;
 
-    switch (*argv[1])
-        case ("-l"):
-        {
-            cout<< "Cows available: ";
-            for (Cow *cow: cows)
-            {
-                cow->getName();
-            }
-        }
+    cout<<args[2];
+    // if(args[1]).compare("-l"))
+    // {
+    //     cout<< "Cows available: ";
+    //     for (Cow *cow: cows)
+    //     {
+    //         cow->getName();
+    //     }
+    // }
     return 0;
 }
