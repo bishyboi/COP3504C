@@ -1,5 +1,4 @@
 #include <typeinfo>
-#include "Cow.h"
 #include "HeiferGenerator.h"
 
 std::vector<Cow*>& HeiferGenerator::getCows()

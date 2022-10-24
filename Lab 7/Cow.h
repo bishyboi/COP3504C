@@ -1,6 +1,5 @@
 #pragma once
 
-#include "HeiferGenerator.h"
 #include <string>
 using namespace std;
 
