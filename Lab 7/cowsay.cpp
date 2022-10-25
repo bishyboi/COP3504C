@@ -23,30 +23,40 @@ int main(int argc, char* argv[])
 
     else if(strcmp(argv[1], "-n")==0)
     {
-        if(strcmp(argv[2], "heifer")==0)
+        if( !((strcmp(argv[2], "heifer")==0) || (strcmp(argv[2], "kitteh")==0) || (strcmp(argv[2], "dragon")==0) || (strcmp(argv[2], "ice-dragon")==0)))  
         {
-            cows[0]->getImage();
-        } else if( strcmp(argv[2], "kitteh")==0)
-        {
-            cows[1]->getImage();
-        } else if( strcmp(argv[2], "dragon")==0)
-        {
-            cows[2]->getImage();
-        } else if( strcmp(argv[2], "ice-dragon")==0)
-        {
-            cows[3]->getImage();
-        }else{
             cout<< "Couldn't find " << argv[2] << " cow!";
-            break;
-        }
+            
+        }else{
 
-        for (int i=3; i<argc; i++)
-        {
-            cout<< argv[i] << " ";
+            for (int i=3; i<argc; i++)
+            {
+                cout<< argv[i] << " ";
+            }
+
+            if(strcmp(argv[2], "heifer")==0)
+            {
+                cout<<cows[0]->getImage();
+            } else if( strcmp(argv[2], "kitteh")==0)
+            {
+                cout<<cows[1]->getImage();
+            } else if( strcmp(argv[2], "dragon")==0)
+            {
+                cout<<cows[2]->getImage();
+                cout<<endl<<"This dragon can breathe fire.";
+            } else if( strcmp(argv[2], "ice-dragon")==0)
+            {
+                cout<<cows[3]->getImage();
+                cout<<endl<<"This dragon cannot breathe fire.";
+            }
         }
     }
     else{
-
+        for (int i=1; i<argc; i++)
+        {
+            cout<< argv[i] << " ";
+        }
+        cout<< std::endl<< cows[0]->getImage();
     }
     return 0;
 }
