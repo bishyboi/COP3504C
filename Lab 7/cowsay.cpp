@@ -23,7 +23,8 @@ int main(int argc, char* argv[])
 
     else if(strcmp(argv[1], "-n")==0)
     {
-        if( !((strcmp(argv[2], "heifer")==0) || (strcmp(argv[2], "kitteh")==0) || (strcmp(argv[2], "dragon")==0) || (strcmp(argv[2], "ice-dragon")==0)))  
+        if( !((strcmp(argv[2], "heifer")==0) || (strcmp(argv[2], "kitteh")==0) 
+            || (strcmp(argv[2], "dragon")==0) || (strcmp(argv[2], "ice-dragon")==0)))  
         {
             cout<< "Couldn't find " << argv[2] << " cow!";
             
@@ -56,7 +57,7 @@ int main(int argc, char* argv[])
         {
             cout<< argv[i] << " ";
         }
-        cout<< std::endl<< cows[0]->getImage();
+        cout<< endl << cows[0]->getImage();
     }
     cout<< endl;
     return 0;
