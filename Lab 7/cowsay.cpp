@@ -58,5 +58,6 @@ int main(int argc, char* argv[])
         }
         cout<< std::endl<< cows[0]->getImage();
     }
+    cout<< endl;
     return 0;
 }
