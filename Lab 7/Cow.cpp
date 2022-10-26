@@ -5,12 +5,12 @@ Cow::Cow(const string &_name)
     this->name = _name;
 }
 
-string& Cow::getName()
+string &Cow::getName()
 {
     return this->name;
 }
 
-string& Cow::getImage()
+string &Cow::getImage()
 {
     return this->image;
 }
