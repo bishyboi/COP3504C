@@ -54,4 +54,4 @@ class Pakuri:
     
     @level.setter
     def level(self, new_level:int):
-        self.level = new_level
+        self.__level = new_level

@@ -7,15 +7,16 @@ class Pakudex():
     def __init__(self):
         pass
 
-    def get_species_List(self):
-        if len(self.pakuris) == 0:
-            return None
-        else:
+    def get_species_list(self):
+        if self.pakuris:
             species_list = []
             for pakuri in self.pakuris:
                 species_list.append(pakuri.get_species())
 
             return species_list
+
+        else:
+            return None
 
     def get_stats(self, species: str):
         if len(self.pakuris) == 0:
@@ -34,6 +35,7 @@ class Pakudex():
         return self.pakuris
 
     def add_pakuri(self, species: str, level: int):
+
         self.pakuris.append(Pakuri(species, level))
         return True
 
@@ -67,23 +69,28 @@ def menu(pakudex: Pakudex):
     print("6. Sort Pakuri")
     print("7. Exit")
     print()
-    selection = int(input("What would you like to do? "))
+
+    try:
+        selection = int(input("What would you like to do? "))
+    except ValueError:
+        print("Unrecognized menu selection!")
+        return True
 
     if selection == 1:
-        species_list = pakudex.get_species_List()
+        species_list = pakudex.get_species_list()
         if species_list != None:
             print("Pakuri in Pakudex")
             for i in range(len(species_list)):
                 print(f"{i+1}. {species_list[i]}")
         else:
-            print("No Pakuri currently in Pakudex!")
+            print("No Pakuri currently in the Pakudex!")
 
     elif selection == 2:
         species = input("Enter the name of the species to display: ")
-        
+
         pakuri_info = pakudex.get_stats(species)
 
-        if pakuri_info==None:
+        if pakuri_info == None:
             print("Error: No such Pakuri!")
         else:
             print()
@@ -94,19 +101,39 @@ def menu(pakudex: Pakudex):
 
     elif selection == 3:
         species = input("Species: ")
-        level = int(input("Level: "))
+        level = input("Level: ")
+
+        while ((not isinstance(level, int)) or level < 0):
+            if not isinstance(level, int):
+                try:
+                    level = int(level)
+
+                    if level < 0:
+                        raise Exception
+                except ValueError:
+                    print("Invalid Level!")
+                    level = input("Level: ")
+                    continue
+                except Exception:
+                    print("Level cannot be negative")
+                    level = input("Level: ")
+                    continue
+
         pakudex.add_pakuri(species, level)
         print(f"Pakuri species {species} (level {level}) added!")
-
     elif selection == 4:
         species = input("Enter the name of the Pakuri to remove: ")
-        pakudex.remove_pakuri(species)
-        print(f"Pakuri {species} removed.")
+        if (pakudex.remove_pakuri(species)):
+            print(f"Pakuri {species} removed.")
+        else:
+            print("Error: No such Pakuri!")
 
     elif selection == 5:
         species = input("Enter the name of the species to evolve: ")
-        pakudex.evolve_species(species)
-        print(f"{species} has evolved!")
+        if (pakudex.evolve_species(species)):
+            print(f"{species} has evolved!")
+        else:
+            print("Error: No such Pakuri!")
 
     elif selection == 6:
         pakudex.sort_pakuri()
