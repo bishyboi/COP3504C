@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
-#include <Cow.h>
+#include "Cow.h"
 
 class FileCow : public Cow
 {

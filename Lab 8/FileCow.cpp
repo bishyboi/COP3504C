@@ -11,7 +11,7 @@ FileCow::FileCow(const string &_name, const string &filename) : Cow(_name)
 // Reads a text file and returns the entire text file, including all whitespace and new lines.
 string FileCow::readFile(const string &filename)
 {
-    ifstream inFile ("cows\\" + filename);
+    ifstream inFile (filename);
     string image;
 
     if(inFile)
@@ -25,6 +25,7 @@ string FileCow::readFile(const string &filename)
     } else
     {
         cerr << "MOOOO!!!";
+        exit(1);
     }
 
     return image;
