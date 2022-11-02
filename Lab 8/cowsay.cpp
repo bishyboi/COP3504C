@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     // Importing the different types of cows and the generator
     HeiferGenerator hg;
     vector<Cow *> cows = hg.getCows();
+    vector<Cow *> fileCows = hg.getFileCows();
 
     // Only runs the program if there are cmd-line args, otherwise a Segmentation Fault will
     if (argc > 1)
@@ -42,7 +43,6 @@ int main(int argc, char *argv[])
             }
             else
             {
-
                 cout << endl;
 
                 // Grabs the message after the name of the cow
