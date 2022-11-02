@@ -23,8 +23,9 @@ string FileCow::readFile(const string &filename)
             image.append(line+"\n");
         }
     } else
+    // FIXME: Determine reason for no file failure exceptions being thrown here
     {
-        cerr << "MOOOO!!!";
+        throw std::ifstream::failure("MOOOOO!!!!!!");
         exit(1);
     }
 
@@ -33,5 +34,6 @@ string FileCow::readFile(const string &filename)
 
 void FileCow::setImage()
 {
+    // FIXME: Determine reason for no runtime exception being thrown
     throw std::runtime_error("Cannot reset FileCow Image");
 }
