@@ -1,5 +1,10 @@
+fn test_run(x: i8)->i8
+{
+    return x+2;
+}
+
 fn main() {
-    let s: String= format!("hello {:b}", 26);
-    println!("{s}");
-    println!("{:b}", 255);
+    let x = (3,4,5);
+
+    println!("{test_run(x.2)}");
 }
