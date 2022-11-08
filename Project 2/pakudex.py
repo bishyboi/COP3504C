@@ -8,6 +8,7 @@ class Pakudex():
         pass
 
     def get_species_list(self):
+        # Checks if the pakuris is an empty list
         if self.pakuris:
             species_list = []
             for pakuri in self.pakuris:
@@ -19,10 +20,13 @@ class Pakudex():
             return None
 
     def get_stats(self, species: str):
-        if len(self.pakuris) == 0:
+        # If pakuris is empty, return None
+        if not self.pakuris:
             return None
         else:
             stats_list = []
+
+            # Finds the pakuri requested and returns a list containing the pakuri stats
             for pakuri in self.pakuris:
                 if pakuri.get_species() == species:
                     stats_list.append(pakuri.level)
@@ -31,10 +35,19 @@ class Pakudex():
                     return stats_list
 
     def sort_pakuri(self):
+        # Will sort on Java lexicographic equality due to the Pakuri lt and gt operators being overridden so that the sort() method can work
         self.pakuris.sort()
         return self.pakuris
 
     def add_pakuri(self, species: str, level: int):
+        # Checks if the level is an integer or less tgab 9
+        if not isinstance(level, int) or level < 0:
+            return False
+
+        # Checks if pakuri is already in the Pakudex
+        for pakuri in self.pakuris:
+            if pakuri.get_species() == species:
+                return False
 
         self.pakuris.append(Pakuri(species, level))
         return True
@@ -44,7 +57,7 @@ class Pakudex():
             if self.pakuris[i].get_species() == species:
                 self.pakuris.pop(i)
                 return True
-
+        # Returns False on the condition that the species is not in the Pakudex
         return False
 
     def evolve_species(self, species: str):
@@ -54,6 +67,7 @@ class Pakudex():
                 self.pakuris[i].set_attack(self.pakuris[i].get_attack() + 1)
                 return True
 
+        # Returns False on the condition that the species is not in the Pakudex
         return False
 
 
@@ -80,6 +94,8 @@ def menu(pakudex: Pakudex):
         species_list = pakudex.get_species_list()
         if species_list != None:
             print("Pakuri in Pakudex")
+            
+            # Prints a numbered list containing all Pakuris
             for i in range(len(species_list)):
                 print(f"{i+1}. {species_list[i]}")
         else:
@@ -101,9 +117,28 @@ def menu(pakudex: Pakudex):
 
     elif selection == 3:
         species = input("Species: ")
+
+        duplicate = True
+
+        # Checks for duplicates iterating through species list
+        while (duplicate):
+            if pakudex.get_species_list() == None:
+                duplicate = False
+                continue
+            for species_name in pakudex.get_species_list():
+                if species_name == species:
+                    print("Error: Pakudex already contains this species!")
+                    duplicate = True
+                    species = input("Species: ")
+                    continue
+
+            duplicate = False
+
         level = input("Level: ")
 
-        while ((not isinstance(level, int)) or level < 0):
+        # Checks for an invalid level entry
+        while (not pakudex.add_pakuri(species, level)):
+            # This will always be true on the first run
             if not isinstance(level, int):
                 try:
                     level = int(level)
@@ -119,8 +154,8 @@ def menu(pakudex: Pakudex):
                     level = input("Level: ")
                     continue
 
-        pakudex.add_pakuri(species, level)
         print(f"Pakuri species {species} (level {level}) added!")
+        
     elif selection == 4:
         species = input("Enter the name of the Pakuri to remove: ")
         if (pakudex.remove_pakuri(species)):
