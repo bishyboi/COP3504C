@@ -7,8 +7,8 @@ class LinkedList
     {
         T data;
         Node *next;
-        Node *last;
-        Node(T _data, Node *_next = nullptr) : data(_data), next(_next) {}
+        Node *previous;
+        Node(T _data, Node *_next = nullptr, Node *_previous = nullptr) : data(_data), next(_next), previous(_previous) {}
     };
     Node *first = nullptr;
     Node *last = nullptr;
@@ -16,6 +16,13 @@ class LinkedList
 public:
     void add(T data);
     void remove(T element);
+    bool isEmpty() const;
+    T getFront() const;
+    T getBack() const;
+    bool contains(T element) const;
+    void enqueue(T element);
+    void dequeue();
+    void pop
 };
 
 template <typename T>
