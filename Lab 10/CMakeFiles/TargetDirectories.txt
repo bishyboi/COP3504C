@@ -1,0 +1,4 @@
+C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/Lab 10/CMakeFiles/memer.dir
+C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/Lab 10/CMakeFiles/memeify.dir
+C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/Lab 10/CMakeFiles/edit_cache.dir
+C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/Lab 10/CMakeFiles/rebuild_cache.dir
