@@ -1,5 +1,3 @@
-use std::os::raw;
-
 //use std::fs::{File};
 struct Header {
     id_length: u8,
@@ -16,6 +14,14 @@ struct Header {
     image_descriptor:u8
 }
 
+#[derive(Clone, Copy)]
+struct Pixel{
+    red: u8,
+    green: u8,
+    blue: u8
+}
+
+
 // Code taken from https://kerkour.com/rust-read-file 
 fn read_file_vec(filepath: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
     let data = std::fs::read(filepath)?;
@@ -28,13 +34,41 @@ fn create_image(image_bytes: &Vec<u8>, output_path: &str){
 }
 
 // Combines Header data and image data into one byte array
-fn generate_tga_bytes(header: Header, image_bytes: Vec<u8>) {
-    //
+fn generate_tga_bytes(header: &mut Header, pixel_data: &Vec<Pixel>) -> Vec<u8>{
+    let mut tga_bytes: Vec<u8> = vec![];
+    // Lord, forgive this abomination
+
+    tga_bytes.push(header.id_length);
+    tga_bytes.push(header.color_map_type);
+    tga_bytes.push(header.image_type_code);
+
+    tga_bytes.append(&mut header.color_map_origin);
+    tga_bytes.append(&mut header.color_map_length);
+
+    tga_bytes.push(header.color_map_depth);
+
+    tga_bytes.append(&mut header.x_origin);
+    tga_bytes.append(&mut header.y_origin);
+    tga_bytes.append(&mut header.width);
+    tga_bytes.append(&mut header.height);
+
+    tga_bytes.push(header.bits_per_pixel);
+    tga_bytes.push(header.image_descriptor);
+
+    for pixel in pixel_data{
+        tga_bytes.push(pixel.blue);
+        tga_bytes.push(pixel.green);
+        tga_bytes.push(pixel.red);
+    }
+
+    tga_bytes
 }
 
 // Returns a Header object and image data in Vec<u8>
-fn get_tga_bytes(input_path: &str) -> (Header, Vec<u8>) {
+fn get_tga_data(input_path: &str) -> (Header, Vec<Pixel>) {
     let raw_data: Vec<u8> = read_file_vec(input_path).expect("Failed to open file.");
+
+    // Lord, forgive this abomination even more
     let header: Header = Header { 
         id_length: raw_data[0], 
         color_map_type: raw_data[1], 
@@ -50,13 +84,46 @@ fn get_tga_bytes(input_path: &str) -> (Header, Vec<u8>) {
         image_descriptor: raw_data[17]
     };
 
-    let image_bytes = raw_data[18..].to_vec();
+    let mut pixels: Vec<Pixel>= vec![];
+    
+    let mut counter: u8 = 2;
+    let mut pixel: Pixel = Pixel { red: 0, green: 0, blue: 0 };
 
-    (header, image_bytes)
+    for byte in raw_data[18..].to_vec(){
+        match counter {
+            2 => {
+                pixel.red= byte;
+                counter-=1;
+            },
+            1 => {
+                pixel.green = byte;
+                counter-=1;
+            }
+            0=> {
+                pixel.blue = byte;
+                counter=2;
+                pixels.push(pixel);
+            }
+            _=> println!("Error: something broke")
+        }
+    }
+
+    (header, pixels)
+}
+
+fn filter_red(pixel_data: &mut Vec<Pixel>){
+    for pixel in pixel_data{
+        pixel.red = 255;
+    }
 }
 
 fn main() {
-    let input_path = "input/car.tga";
-    let image_bytes = read_file_vec(input_path).expect("Could not read file.");
-    create_image(&image_bytes, "output/car.tga");
+    let input_path: &str = "input/car.tga";
+
+    let (mut header, mut pixel_data) = get_tga_data(input_path);
+
+    filter_red(&mut pixel_data);
+    
+    let generated_bytes: Vec<u8> = generate_tga_bytes(&mut header, &pixel_data);
+    create_image(&generated_bytes, "output/car.tga");
 }
