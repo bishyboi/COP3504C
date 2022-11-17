@@ -245,9 +245,9 @@ fn test_image(output: &Vec<u8>, example: &Vec<u8>) -> bool {
     for i in 1..output.len(){
         if output[i]!= example[i]{
             pass = false;
-            println!("Output: {} vs. Example: {}",output[i], example[i]);
+            println!("\nOutput: {} vs. Example: {}",output[i], example[i]);
             println!();
-            
+            return pass;
         }
     }
 
@@ -350,20 +350,83 @@ fn main() {
         print_test(part7, "part7", 7);
     }
 
-    // Part 8
+    // Part 8-R
     {
         let mut pixels: Vec<Pixel> = vec![];
 
         for i in 0..car.pixel_data.len(){
 
-            let modded_pixel: Pixel = Pixel { red: car.pixel_data[i].red, green: 0, blue: 0 };
+            let modded_pixel: Pixel = Pixel { red: car.pixel_data[i].blue, green: car.pixel_data[i].blue, blue: car.pixel_data[i].blue };
             
             
             pixels.push(modded_pixel);
         }
 
         let part8_r: TGA = TGA { header: car.header.clone(), pixel_data: pixels };
-        //print_test(part8_r, "part8_r", 81);
+        print_test(part8_r, "part8_r", 81);
+    }
+
+    // Part 8-G
+    {
+        let mut pixels: Vec<Pixel> = vec![];
+
+        for i in 0..car.pixel_data.len(){
+
+            let modded_pixel: Pixel = Pixel { red: car.pixel_data[i].green, green: car.pixel_data[i].green, blue: car.pixel_data[i].green };
+            
+            
+            pixels.push(modded_pixel);
+        }
+
+        let part8_g: TGA = TGA { header: car.header.clone(), pixel_data: pixels };
+        print_test(part8_g, "part8_g", 82);
     }
     
+    // Part 8-B
+    {
+        let mut pixels: Vec<Pixel> = vec![];
+
+        for i in 0..car.pixel_data.len(){
+
+            let modded_pixel: Pixel = Pixel { red: car.pixel_data[i].red, green: car.pixel_data[i].red, blue: car.pixel_data[i].red };
+            
+            
+            pixels.push(modded_pixel);
+        }
+
+        let part8_b: TGA = TGA { header: car.header.clone(), pixel_data: pixels };
+        print_test(part8_b, "part8_b", 83);
+    }
+
+    // Part 9
+    {
+        let mut pixels: Vec<Pixel> = vec![];
+
+        for i in 0..layer_red.pixel_data.len() {
+            let new_pixel: Pixel = Pixel{
+                red: layer_blue.pixel_data[i].red,
+                green: layer_green.pixel_data[i].green,
+                blue: layer_red.pixel_data[i].blue};
+
+                pixels.push(new_pixel);
+        }
+
+        let part9: TGA = TGA { header: layer_red.header, pixel_data: pixels};
+        print_test(part9, "part9", 9);  
+    }
+
+    // Part 10
+    {
+        let mut pixels: Vec<Pixel> = vec![];
+
+        for pixel in text2.pixel_data{
+            pixels.push(pixel);
+        }
+        pixels.reverse();
+
+        let part10: TGA = TGA { header: text2.header, pixel_data: pixels};
+        print_test(part10, "part10", 10);  
+    }
+    
+
 }
