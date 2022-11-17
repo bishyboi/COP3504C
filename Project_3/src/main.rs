@@ -1,4 +1,5 @@
-//use std::fs::{File};
+use std::{collections::btree_set, f32::consts::PI};
+
 struct Header {
     id_length: u8,
     color_map_type: u8,
@@ -20,6 +21,7 @@ struct Pixel{
     green: u8,
     blue: u8
 }
+
 
 
 // Code taken from https://kerkour.com/rust-read-file 
@@ -111,19 +113,66 @@ fn get_tga_data(input_path: &str) -> (Header, Vec<Pixel>) {
     (header, pixels)
 }
 
-fn filter_red(pixel_data: &mut Vec<Pixel>){
-    for pixel in pixel_data{
-        pixel.red = 255;
+fn multiply(pixels_a: &Vec<Pixel>, pixels_b: &Vec<Pixel>) -> Vec<Pixel>{
+    let mut pixels: Vec<Pixel> = vec![];
+    
+    for pixel_num in 0..pixels_a.len(){
+        pixels.push(multiply_pixels(&pixels_a[pixel_num], &pixels_b[pixel_num]));
     }
+
+    pixels
 }
 
-fn main() {
-    let input_path: &str = "input/car.tga";
+fn multiply_pixels(a: &Pixel, b: &Pixel) -> Pixel{
+    let (mut a_red, mut a_green, mut a_blue) = ((a.red as f64)/(255.0), (a.green as f64)/(255.0), (a.blue as f64)/(255.0));
+    //let (b_red, b_green, b_blue) = ((b.red as f64)/(255.0), (b.green as f64)/(255.0), (b.blue as f64)/(255.0));
 
-    let (mut header, mut pixel_data) = get_tga_data(input_path);
+    let (b_red, b_green, b_blue) = (b.red as f64, b.green as f64, b.blue as f64);
 
-    filter_red(&mut pixel_data);
+    a_red*= b_red;
+    a_green*= b_green;
+    a_blue*= b_blue;
+
+    a_red += 0.5f64;
+    a_green+= 0.5f64;
+    a_blue+= 0.5f64;
+
+    Pixel { red: a_red as u8, green: a_green as u8, blue: a_blue as u8 }
+}
+
+fn subtract(top: &Vec<Pixel>, bottom: &Vec<Pixel>) -> Vec<Pixel>{
+    let mut pixels: Vec<Pixel> = vec![];
     
-    let generated_bytes: Vec<u8> = generate_tga_bytes(&mut header, &pixel_data);
-    create_image(&generated_bytes, "output/car.tga");
+    for pixel_num in 0..top.len(){
+        pixels.push(subtract_pixels(&top[pixel_num], &bottom[pixel_num]));
+    }
+
+    pixels
+}
+
+fn subtract_pixels(top: &Pixel, bottom: &Pixel) -> Pixel{
+    let mut pixel: Pixel = Pixel { red: 0, green: 0, blue: 0 };
+    if top.red < bottom.red {
+        pixel.red = bottom.red-top.red;
+    }
+    if top.green < bottom.green {
+        pixel.green = bottom.green - top.green;
+    }
+    if top.blue < top.blue {
+        pixel.blue = bottom.blue - top.blue;
+    }
+
+    pixel
+}
+fn main() {
+    let image_1: &str = "input/car.tga";
+    let image_2: &str = "input/pattern2.tga";
+
+    let (mut car_header, car_pixel_data) = get_tga_data(image_1);
+    let (pattern2_header,  pattern2_pixel_data) = get_tga_data(image_2);
+    
+    let processed_pixels = subtract(&car_pixel_data, &pattern2_pixel_data);
+
+    let generated_bytes: Vec<u8> = generate_tga_bytes(&mut car_header, &processed_pixels);
+    create_image(&generated_bytes, "output/processed.tga");
 }
