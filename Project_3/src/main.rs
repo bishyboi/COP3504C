@@ -1,5 +1,7 @@
-use std::{collections::btree_set, f32::consts::PI};
+use std::fs::read;
 
+
+#[derive(Clone)]
 struct Header {
     id_length: u8,
     color_map_type: u8,
@@ -22,8 +24,10 @@ struct Pixel{
     blue: u8
 }
 
-
-
+struct TGA{
+    header: Header,
+    pixel_data: Vec<Pixel>
+}
 // Code taken from https://kerkour.com/rust-read-file 
 fn read_file_vec(filepath: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
     let data = std::fs::read(filepath)?;
@@ -31,12 +35,16 @@ fn read_file_vec(filepath: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> 
 }
 
 // Code taken from https://stackoverflow.com/questions/65702940/how-to-write-file-from-vecu8 
+// Takes raw byte data and writes it to a file
 fn create_image(image_bytes: &Vec<u8>, output_path: &str){
     std::fs::write(output_path, image_bytes).expect("Failed to write to file.");
 }
 
-// Combines Header data and image data into one byte array
-fn generate_tga_bytes(header: &mut Header, pixel_data: &Vec<Pixel>) -> Vec<u8>{
+// Combines Header data and image data from a TGA object into one byte array
+fn generate_tga_bytes(tga: TGA) -> Vec<u8>{
+    let mut header: Header = tga.header;
+    let pixel_data: Vec<Pixel> = tga.pixel_data;
+
     let mut tga_bytes: Vec<u8> = vec![];
     // Lord, forgive this abomination
 
@@ -58,16 +66,16 @@ fn generate_tga_bytes(header: &mut Header, pixel_data: &Vec<Pixel>) -> Vec<u8>{
     tga_bytes.push(header.image_descriptor);
 
     for pixel in pixel_data{
-        tga_bytes.push(pixel.blue);
-        tga_bytes.push(pixel.green);
         tga_bytes.push(pixel.red);
+        tga_bytes.push(pixel.green);
+        tga_bytes.push(pixel.blue);
     }
 
     tga_bytes
 }
 
 // Returns a Header object and image data in Vec<u8>
-fn get_tga_data(input_path: &str) -> (Header, Vec<Pixel>) {
+fn get_tga_data(input_path: &str) -> TGA{
     let raw_data: Vec<u8> = read_file_vec(input_path).expect("Failed to open file.");
 
     // Lord, forgive this abomination even more
@@ -110,22 +118,22 @@ fn get_tga_data(input_path: &str) -> (Header, Vec<Pixel>) {
         }
     }
 
-    (header, pixels)
+    TGA{header: header, pixel_data: pixels}
 }
 
-fn multiply(pixels_a: &Vec<Pixel>, pixels_b: &Vec<Pixel>) -> Vec<Pixel>{
+fn multiply(a: &TGA, b: &TGA) -> TGA{
+
     let mut pixels: Vec<Pixel> = vec![];
     
-    for pixel_num in 0..pixels_a.len(){
-        pixels.push(multiply_pixels(&pixels_a[pixel_num], &pixels_b[pixel_num]));
+    for pixel_num in 0..a.pixel_data.len(){
+        pixels.push(multiply_pixels(&a.pixel_data[pixel_num], &b.pixel_data[pixel_num]));
     }
 
-    pixels
+    TGA { header: a.header.clone(), pixel_data: pixels }
 }
 
-fn multiply_pixels(a: &Pixel, b: &Pixel) -> Pixel{
+fn multiply_pixels(a: &Pixel, b: &Pixel) -> Pixel {
     let (mut a_red, mut a_green, mut a_blue) = ((a.red as f64)/(255.0), (a.green as f64)/(255.0), (a.blue as f64)/(255.0));
-    //let (b_red, b_green, b_blue) = ((b.red as f64)/(255.0), (b.green as f64)/(255.0), (b.blue as f64)/(255.0));
 
     let (b_red, b_green, b_blue) = (b.red as f64, b.green as f64, b.blue as f64);
 
@@ -140,39 +148,143 @@ fn multiply_pixels(a: &Pixel, b: &Pixel) -> Pixel{
     Pixel { red: a_red as u8, green: a_green as u8, blue: a_blue as u8 }
 }
 
-fn subtract(top: &Vec<Pixel>, bottom: &Vec<Pixel>) -> Vec<Pixel>{
+// Order matters!
+fn subtract(top: &TGA, bottom: &TGA) -> TGA{
     let mut pixels: Vec<Pixel> = vec![];
     
-    for pixel_num in 0..top.len(){
-        pixels.push(subtract_pixels(&top[pixel_num], &bottom[pixel_num]));
+    for pixel_num in 0..top.pixel_data.len(){
+        pixels.push(subtract_pixels(&top.pixel_data[pixel_num], &bottom.pixel_data[pixel_num]));
     }
 
-    pixels
+    TGA { header: bottom.header.clone(), pixel_data: pixels }
 }
 
-fn subtract_pixels(top: &Pixel, bottom: &Pixel) -> Pixel{
-    let mut pixel: Pixel = Pixel { red: 0, green: 0, blue: 0 };
-    if top.red < bottom.red {
+fn subtract_pixels(top: &Pixel, bottom: &Pixel) -> Pixel {
+    let mut pixel: Pixel = Pixel { red: 0, green: 0, blue: 0};
+    if top.red <= bottom.red {
         pixel.red = bottom.red-top.red;
     }
-    if top.green < bottom.green {
+    if top.green <= bottom.green {
         pixel.green = bottom.green - top.green;
     }
-    if top.blue < top.blue {
+    if top.blue <= bottom.blue {
         pixel.blue = bottom.blue - top.blue;
     }
 
     pixel
 }
-fn main() {
-    let image_1: &str = "input/car.tga";
-    let image_2: &str = "input/pattern2.tga";
 
-    let (mut car_header, car_pixel_data) = get_tga_data(image_1);
-    let (pattern2_header,  pattern2_pixel_data) = get_tga_data(image_2);
+fn screen(a: &TGA, b: &TGA) -> TGA{
+    let mut pixels: Vec<Pixel> = vec![];
     
-    let processed_pixels = subtract(&car_pixel_data, &pattern2_pixel_data);
+    for pixel_num in 0..a.pixel_data.len(){
+        pixels.push(screen_pixels(&a.pixel_data[pixel_num], &b.pixel_data[pixel_num]));
+    }
 
-    let generated_bytes: Vec<u8> = generate_tga_bytes(&mut car_header, &processed_pixels);
-    create_image(&generated_bytes, "output/processed.tga");
+    TGA { header: a.header.clone(), pixel_data: pixels }
+}
+
+fn screen_pixels(a: &Pixel, b: &Pixel) -> Pixel {
+    let mut pixel: Pixel = Pixel { red: 255, green: 255, blue: 255 };
+
+    let (a_red, a_green, a_blue) = ((a.red as f64)/(255.0), (a.green as f64)/(255.0), (a.blue as f64)/(255.0));
+    let (b_red, b_green, b_blue) = ((b.red as f64)/(255.0), (b.green as f64)/(255.0), (b.blue as f64)/(255.0));
+
+    pixel.red -= ((1 as f64-a_red)*(1 as f64-b_red)*(255 as f64) + 0.5f64) as u8;
+    pixel.green -= ((1 as f64-a_green)*(1 as f64-b_green)*(255 as f64) + 0.5f64) as u8;
+    pixel.blue -= ((1 as f64-a_blue)*(1 as f64-b_blue)*(255 as f64)+  0.5f64) as u8;
+
+    pixel
+}
+
+// Order matters!
+fn overlay(a: &TGA, b: &TGA) -> TGA {
+    let mut pixels: Vec<Pixel> = vec![];
+    
+    for pixel_num in 0..a.pixel_data.len(){
+        pixels.push(overlay_pixels(&a.pixel_data[pixel_num], &b.pixel_data[pixel_num]));
+    }
+
+    TGA { header: a.header.clone(), pixel_data: pixels }
+}
+
+fn overlay_pixels(a: &Pixel, b: &Pixel) -> Pixel {
+    let (mut a_red, mut a_green, mut a_blue) = ((a.red as f64)/(255.0), (a.green as f64)/(255.0), (a.blue as f64)/(255.0));
+
+    let (b_red, b_green, b_blue) = (b.red as f64, b.green as f64, b.blue as f64);
+
+    a_red*= b_red* 2 as f64;
+    a_green*= b_green* 2 as f64;
+    a_blue*= b_blue* 2 as f64;
+
+    a_red += 0.5f64;
+    a_green+= 0.5f64;
+    a_blue+= 0.5f64;
+
+    Pixel { red: if b.red < 128 {a_red as u8} else {255-a_red as u8}, 
+            green: if b.green < 128 {a_green as u8} else {255-a_green as u8}, 
+            blue: if b.blue < 128 {a_blue as u8} else {255-a_blue as u8}
+        }
+    
+}
+
+fn test_image(output: &Vec<u8>, example: &Vec<u8>) -> bool {
+    let mut pass:bool = true;
+
+    for i in 1..output.len(){
+        if output[i]!= example[i]{
+            pass = false;
+        }
+    }
+
+    pass
+}
+
+fn print_test(tga: TGA, s: &str, no: u8) {
+    let generated_bytes = generate_tga_bytes(tga);
+    let example_path = format!("examples/EXAMPLE_{}.tga",s);
+    let output_path = format!("output/{}.tga",s);
+    let test_bytes = read_file_vec(&example_path).expect("Could not open file.");
+    create_image(&generated_bytes, &output_path);
+
+    let pass = test_image(&generated_bytes, &test_bytes);
+    
+    println!("Task #{} Test: {}", no, test_image(&generated_bytes, &test_bytes));
+}
+fn main() {
+    let car = get_tga_data("input/car.tga");
+    let circles = get_tga_data("input/circles.tga");
+
+    let layer_blue = get_tga_data("input/layer_blue.tga");
+    let layer_green = get_tga_data("input/layer_green.tga");
+    let layer_red = get_tga_data("input/layer_red.tga");
+
+    let layer1 = get_tga_data("input/layer1.tga");
+    let layer2 = get_tga_data("input/layer2.tga");
+
+    let pattern2 = get_tga_data("input/pattern2.tga");
+    let pattern1 = get_tga_data("input/pattern1.tga");
+
+    let text = get_tga_data("input/text.tga");
+    let text2 = get_tga_data("input/text2.tga");
+
+
+    let part1 = multiply(&layer1, &pattern1);
+    print_test(part1, "part1", 1);
+    
+    let part2 = subtract(&layer2, &car);
+    print_test(part2, "part2", 2);
+
+    let part3_temp = multiply(&layer1, &pattern2);
+    let part3 = screen(&text, &part3_temp);
+    print_test(part3, "part3", 3);
+
+    let part4_temp = multiply(&layer2, &circles);
+    let part4 = subtract(&pattern2, &part4_temp);
+    print_test(part4, "part4", 4);
+
+    let part5 = overlay(&layer1, &pattern1);
+    print_test(part5, "part5", 5);
+
+
 }
