@@ -245,6 +245,9 @@ fn test_image(output: &Vec<u8>, example: &Vec<u8>) -> bool {
     for i in 1..output.len(){
         if output[i]!= example[i]{
             pass = false;
+            println!("Output: {} vs. Example: {}",output[i], example[i]);
+            println!();
+            
         }
     }
 
@@ -299,36 +302,35 @@ fn main() {
     {
         let mut pixels: Vec<Pixel> = vec![];
 
-        for i in 1..car.pixel_data.len(){
+        for i in 0..car.pixel_data.len(){
             let red: u8 = car.pixel_data[i].red;
             let blue: u8 = car.pixel_data[i].blue;
             
-            let mut green: f64 = car.pixel_data[i].green as f64 / 255.0;
+            let mut green= car.pixel_data[i].green;
 
-            if green + 200.0/255.0 > 1.0{
-                green = 1.0;
+            if green as u32 + 200 as u32 > 255 {
+                green = 255;
             } else{
-                green+=200.0/255.0;
+                green+=200;
             }
 
-            green*=255.0;
-            green += 0.5f64;
 
-            let new_pixel = Pixel { red: red, green: green as u8, blue: blue };
+            let new_pixel = Pixel { red: red, green: green, blue: blue };
             
             pixels.push(new_pixel);
         }
 
         let part6: TGA = TGA { header: car.header.clone(), pixel_data: pixels };
-        print_test(part6, "part6", 6);
+        print_test(part6, "part6", 6); //?????
     }
 
     
     // Part 7
+
     {
         let mut pixels: Vec<Pixel> = vec![];
 
-        for i in 1..car.pixel_data.len(){
+        for i in 0..car.pixel_data.len(){
 
             let modded_pixel: Pixel = if (car.pixel_data[i].blue as u32 *4 as u32) < 255 as u32
                                     {Pixel { red: 0, 
@@ -352,7 +354,7 @@ fn main() {
     {
         let mut pixels: Vec<Pixel> = vec![];
 
-        for i in 1..car.pixel_data.len(){
+        for i in 0..car.pixel_data.len(){
 
             let modded_pixel: Pixel = Pixel { red: car.pixel_data[i].red, green: 0, blue: 0 };
             
@@ -361,6 +363,7 @@ fn main() {
         }
 
         let part8_r: TGA = TGA { header: car.header.clone(), pixel_data: pixels };
-        print_test(part8_r, "part8_r", 81);
+        //print_test(part8_r, "part8_r", 81);
     }
+    
 }
