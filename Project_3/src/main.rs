@@ -1,6 +1,3 @@
-use std::fs::read;
-
-
 #[derive(Clone)]
 struct Header {
     id_length: u8,
@@ -211,21 +208,35 @@ fn overlay(a: &TGA, b: &TGA) -> TGA {
 fn overlay_pixels(a: &Pixel, b: &Pixel) -> Pixel {
     let (mut a_red, mut a_green, mut a_blue) = ((a.red as f64)/(255.0), (a.green as f64)/(255.0), (a.blue as f64)/(255.0));
 
-    let (b_red, b_green, b_blue) = (b.red as f64, b.green as f64, b.blue as f64);
+    let (b_red, b_green, b_blue) = (b.red as f64 /255.0, b.green as f64/255.0, b.blue as f64/255.0);
 
-    a_red*= b_red* 2 as f64;
-    a_green*= b_green* 2 as f64;
-    a_blue*= b_blue* 2 as f64;
+    if b.red <128 {
+        a_red*= b_red*2.0;
+    }else{
+        a_red = 1.0 - 2.0*(1.0-a_red) * (1.0-b_red);
+    }
+
+    if b.green <128 {
+        a_green*= b_green*2.0;
+    }else{
+        a_green = 1.0 - 2.0*(1.0-a_green) * (1.0-b_green);
+    }
+
+    if b.blue <128 {
+        a_blue*= b_blue*2.0;
+    }else{
+        a_blue = 1.0 - 2.0*(1.0-a_blue) * (1.0-b_blue);
+    }
+
+    a_red*=255.0;
+    a_green*=255.0;
+    a_blue*=255.0;
 
     a_red += 0.5f64;
     a_green+= 0.5f64;
     a_blue+= 0.5f64;
-
-    Pixel { red: if b.red < 128 {a_red as u8} else {255-a_red as u8}, 
-            green: if b.green < 128 {a_green as u8} else {255-a_green as u8}, 
-            blue: if b.blue < 128 {a_blue as u8} else {255-a_blue as u8}
-        }
     
+    Pixel { red: a_red as u8, green: a_green as u8, blue: a_blue as u8 }
 }
 
 fn test_image(output: &Vec<u8>, example: &Vec<u8>) -> bool {
@@ -246,8 +257,6 @@ fn print_test(tga: TGA, s: &str, no: u8) {
     let output_path = format!("output/{}.tga",s);
     let test_bytes = read_file_vec(&example_path).expect("Could not open file.");
     create_image(&generated_bytes, &output_path);
-
-    let pass = test_image(&generated_bytes, &test_bytes);
     
     println!("Task #{} Test: {}", no, test_image(&generated_bytes, &test_bytes));
 }
@@ -286,5 +295,72 @@ fn main() {
     let part5 = overlay(&layer1, &pattern1);
     print_test(part5, "part5", 5);
 
+    // Part 6
+    {
+        let mut pixels: Vec<Pixel> = vec![];
 
+        for i in 1..car.pixel_data.len(){
+            let red: u8 = car.pixel_data[i].red;
+            let blue: u8 = car.pixel_data[i].blue;
+            
+            let mut green: f64 = car.pixel_data[i].green as f64 / 255.0;
+
+            if green + 200.0/255.0 > 1.0{
+                green = 1.0;
+            } else{
+                green+=200.0/255.0;
+            }
+
+            green*=255.0;
+            green += 0.5f64;
+
+            let new_pixel = Pixel { red: red, green: green as u8, blue: blue };
+            
+            pixels.push(new_pixel);
+        }
+
+        let part6: TGA = TGA { header: car.header.clone(), pixel_data: pixels };
+        print_test(part6, "part6", 6);
+    }
+
+    
+    // Part 7
+    {
+        let mut pixels: Vec<Pixel> = vec![];
+
+        for i in 1..car.pixel_data.len(){
+
+            let modded_pixel: Pixel = if (car.pixel_data[i].blue as u32 *4 as u32) < 255 as u32
+                                    {Pixel { red: 0, 
+                                             green: car.pixel_data[i].green, 
+                                             blue: car.pixel_data[i].blue*4}
+                                    } else 
+                                    {Pixel { red: 0, 
+                                             green: car.pixel_data[i].green, 
+                                             blue: 255}
+                                    };
+            
+            
+            pixels.push(modded_pixel);
+        }
+
+        let part7: TGA = TGA { header: car.header.clone(), pixel_data: pixels };
+        print_test(part7, "part7", 7);
+    }
+
+    // Part 8
+    {
+        let mut pixels: Vec<Pixel> = vec![];
+
+        for i in 1..car.pixel_data.len(){
+
+            let modded_pixel: Pixel = Pixel { red: car.pixel_data[i].red, green: 0, blue: 0 };
+            
+            
+            pixels.push(modded_pixel);
+        }
+
+        let part8_r: TGA = TGA { header: car.header.clone(), pixel_data: pixels };
+        print_test(part8_r, "part8_r", 81);
+    }
 }
