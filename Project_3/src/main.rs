@@ -425,8 +425,30 @@ fn main() {
         pixels.reverse();
 
         let part10: TGA = TGA { header: text2.header, pixel_data: pixels};
-        print_test(part10, "part10", 10);  
+        print_test(part10, "part10", 10);
+    
+    }
+    println!("{}", car.header);
+    /*
+    // Extra Credit
+    {
+        let mut pixels: Vec<Pixel> = vec![];
+
+        let ec_header: Header = Header { 
+                                        id_length: (), 
+                                        color_map_type: (), 
+                                        image_type_code: (), 
+                                        color_map_origin: (), 
+                                        color_map_length: (), 
+                                        color_map_depth: (), 
+                                        x_origin: (), 
+                                        y_origin: (), 
+                                        width: (), 
+                                        height: (), 
+                                        bits_per_pixel: (), 
+                                        image_descriptor: () };
+
     }
     
-
+    */
 }
