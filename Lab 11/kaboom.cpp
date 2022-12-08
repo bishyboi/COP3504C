@@ -4,7 +4,7 @@
 #include <thread>
 #include <SFML/Graphics.hpp>
 
-#include "ParticleFactory.h"
+#include "ParticleFactoryKevin.h"
 
 #define NUMBER_OF_PARTICLES 110
 #define SLEEP_TIME_MS 1

@@ -1,0 +1,96 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "minesweeper",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Button::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Button-89dc6fb14f2448be6009.json",
+					"name" : "Button",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "GameState::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-GameState-343420926d993ba90735.json",
+					"name" : "GameState",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Tile::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Tile-2ab862f8ed15a61ff895.json",
+					"name" : "Tile",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Toolbox::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Toolbox-2ced999c98a2b3d9afd7.json",
+					"name" : "Toolbox",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "minesweeper::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-minesweeper-7add68adf00f5f8041d3.json",
+					"name" : "minesweeper",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/Project 4/build",
+		"source" : "C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/Project 4"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

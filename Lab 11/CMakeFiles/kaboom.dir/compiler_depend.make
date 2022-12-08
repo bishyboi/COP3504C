@@ -263,7 +263,7 @@ CMakeFiles/kaboom.dir/kaboom.cpp.obj: kaboom.cpp \
   C:/Program\ Files/SFML-2.5.1/include/SFML/Graphics/Sprite.hpp \
   C:/Program\ Files/SFML-2.5.1/include/SFML/Graphics/Text.hpp \
   C:/Program\ Files/SFML-2.5.1/include/SFML/Graphics/VertexBuffer.hpp \
-  ParticleFactory.h
+  ParticleFactoryKevin.h
 
 
 C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/c++config.h:
@@ -500,6 +500,8 @@ C:/msys64/mingw64/include/c++/11.2.0/bits/uses_allocator.h:
 
 C:/msys64/mingw64/include/c++/11.2.0/bits/invoke.h:
 
+ParticleFactoryKevin.h:
+
 C:/Program\ Files/SFML-2.5.1/include/SFML/Graphics/VertexArray.hpp:
 
 C:/msys64/mingw64/include/c++/11.2.0/bits/functional_hash.h:
@@ -673,8 +675,6 @@ C:/msys64/mingw64/include/c++/11.2.0/functional:
 C:/msys64/mingw64/include/c++/11.2.0/bits/hashtable.h:
 
 C:/msys64/mingw64/include/c++/11.2.0/bits/node_handle.h:
-
-ParticleFactory.h:
 
 C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/time_members.h:
 

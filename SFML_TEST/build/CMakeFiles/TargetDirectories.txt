@@ -1,0 +1,4 @@
+C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/SFML_TEST/build/CMakeFiles/memer.dir
+C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/SFML_TEST/build/CMakeFiles/memeify.dir
+C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/SFML_TEST/build/CMakeFiles/edit_cache.dir
+C:/Users/bisho/Documents/UF/Programming Fundamentals/COP3504C/SFML_TEST/build/CMakeFiles/rebuild_cache.dir

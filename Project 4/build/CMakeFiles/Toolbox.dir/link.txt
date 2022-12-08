@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc libToolbox.a CMakeFiles/Toolbox.dir/src/Toolbox.cpp.obj
+C:\msys64\mingw64\bin\ranlib.exe libToolbox.a

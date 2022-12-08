@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc libButton.a CMakeFiles/Button.dir/src/Button.cpp.obj
+C:\msys64\mingw64\bin\ranlib.exe libButton.a
