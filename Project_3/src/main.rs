@@ -242,7 +242,7 @@ fn overlay_pixels(a: &Pixel, b: &Pixel) -> Pixel {
 fn test_image(output: &Vec<u8>, example: &Vec<u8>) -> bool {
     let mut pass:bool = true;
 
-    for i in 1..output.len(){
+    for i in 0..output.len(){
         if output[i]!= example[i]{
             pass = false;
             println!("\nOutput: {} vs. Example: {}",output[i], example[i]);
