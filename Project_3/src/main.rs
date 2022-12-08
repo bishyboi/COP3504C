@@ -428,7 +428,7 @@ fn main() {
         print_test(part10, "part10", 10);
     
     }
-    println!("{}", car.header);
+    //println!("{}", car.header);
     /*
     // Extra Credit
     {
