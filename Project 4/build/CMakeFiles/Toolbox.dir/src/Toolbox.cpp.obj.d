@@ -252,5 +252,8 @@ CMakeFiles/Toolbox.dir/src/Toolbox.cpp.obj: \
  C:/Libraries/SFML-2.5.1/include/SFML/Graphics/Text.hpp \
  C:/Libraries/SFML-2.5.1/include/SFML/Graphics/VertexBuffer.hpp \
  C:\Users\bisho\Documents\UF\Programming\ Fundamentals\COP3504C\Project\ 4\src\Button.h \
+ C:/msys64/mingw64/include/c++/11.2.0/iostream \
+ C:/msys64/mingw64/include/c++/11.2.0/istream \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/istream.tcc \
  C:\Users\bisho\Documents\UF\Programming\ Fundamentals\COP3504C\Project\ 4\src\GameState.h \
  C:\Users\bisho\Documents\UF\Programming\ Fundamentals\COP3504C\Project\ 4\src\Tile.h

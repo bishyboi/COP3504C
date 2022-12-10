@@ -3,7 +3,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "libTile.a"
+			"path" : "libGameState.a"
 		}
 	],
 	"backtrace" : 1,
@@ -55,9 +55,16 @@
 			]
 		}
 	],
-	"id" : "Tile::@6890427a1f51a3e7e1df",
-	"name" : "Tile",
-	"nameOnDisk" : "libTile.a",
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "Tile::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "GameState::@6890427a1f51a3e7e1df",
+	"name" : "GameState",
+	"nameOnDisk" : "libGameState.a",
 	"paths" : 
 	{
 		"build" : ".",
@@ -78,7 +85,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/Tile.cpp",
+			"path" : "src/GameState.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

@@ -252,7 +252,10 @@ CMakeFiles/Button.dir/src/Button.cpp.obj: C:/Users/bisho/Documents/UF/Programmin
   C:/Libraries/SFML-2.5.1/include/SFML/Graphics/Glsl.inl \
   C:/Libraries/SFML-2.5.1/include/SFML/Graphics/Sprite.hpp \
   C:/Libraries/SFML-2.5.1/include/SFML/Graphics/Text.hpp \
-  C:/Libraries/SFML-2.5.1/include/SFML/Graphics/VertexBuffer.hpp
+  C:/Libraries/SFML-2.5.1/include/SFML/Graphics/VertexBuffer.hpp \
+  C:/msys64/mingw64/include/c++/11.2.0/iostream \
+  C:/msys64/mingw64/include/c++/11.2.0/istream \
+  C:/msys64/mingw64/include/c++/11.2.0/bits/istream.tcc
 
 
 C:/Libraries/SFML-2.5.1/include/SFML/Config.hpp:
@@ -374,6 +377,8 @@ C:/msys64/mingw64/x86_64-w64-mingw32/include/vadefs.h:
 C:/msys64/mingw64/include/c++/11.2.0/new:
 
 C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/stddef.h:
+
+C:/msys64/mingw64/include/c++/11.2.0/bits/istream.tcc:
 
 C:/msys64/mingw64/x86_64-w64-mingw32/include/corecrt_stdio_config.h:
 
@@ -693,6 +698,8 @@ C:/Libraries/SFML-2.5.1/include/SFML/System/Vector3.inl:
 
 C:/Libraries/SFML-2.5.1/include/SFML/Window/Clipboard.hpp:
 
+C:/msys64/mingw64/include/c++/11.2.0/istream:
+
 C:/Libraries/SFML-2.5.1/include/SFML/Window/Export.hpp:
 
 C:/Libraries/SFML-2.5.1/include/SFML/Window/Context.hpp:
@@ -758,3 +765,5 @@ C:/Libraries/SFML-2.5.1/include/SFML/Graphics/Glsl.hpp:
 C:/Libraries/SFML-2.5.1/include/SFML/Graphics/Glsl.inl:
 
 C:/Libraries/SFML-2.5.1/include/SFML/Graphics/Sprite.hpp:
+
+C:/msys64/mingw64/include/c++/11.2.0/iostream:

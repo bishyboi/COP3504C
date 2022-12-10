@@ -2,15 +2,11 @@
 #include <SFML/Graphics.hpp>
 #include "Tile.h"
 
-class PlayStatus{
-    protected:
-        PlayStatus();
-
-    friend class GameState;
-};
 
 class GameState{
     public:
+        enum PlayStatus { WIN, LOSS, PLAYING };
+
         GameState(sf::Vector2f _dimensions = sf::Vector2f(25, 16), int _numberOfMines = 50);
 
         GameState(const char* filepath);

@@ -16,3 +16,7 @@ void toggleDebugMode();
 bool getDebugMode();
 
 bool gameLoop();
+
+bool wasClicked(Button* button);
+
+bool wasClicked(sf::Sprite* sprite);

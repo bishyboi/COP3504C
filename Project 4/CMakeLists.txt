@@ -7,11 +7,12 @@ find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 add_library(Button src/Button.cpp)
 target_link_libraries(Button sfml-graphics sfml-audio)
 
-add_library(GameState src/GameState.cpp)
-target_link_libraries(GameState sfml-graphics sfml-audio)
-
 add_library(Tile src/Tile.cpp)
 target_link_libraries(Tile sfml-graphics sfml-audio)
+
+add_library(GameState src/GameState.cpp)
+target_link_libraries(GameState Tile sfml-graphics sfml-audio)
+
 
 add_library(Toolbox src/Toolbox.cpp)
 target_link_libraries(Toolbox sfml-graphics sfml-audio)

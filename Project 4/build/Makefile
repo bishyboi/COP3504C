@@ -129,19 +129,6 @@ Button/fast:
 .PHONY : Button/fast
 
 #=============================================================================
-# Target rules for targets named GameState
-
-# Build rule for target.
-GameState: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 GameState
-.PHONY : GameState
-
-# fast build rule for target.
-GameState/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\GameState.dir\build.make CMakeFiles/GameState.dir/build
-.PHONY : GameState/fast
-
-#=============================================================================
 # Target rules for targets named Tile
 
 # Build rule for target.
@@ -153,6 +140,19 @@ Tile: cmake_check_build_system
 Tile/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Tile.dir\build.make CMakeFiles/Tile.dir/build
 .PHONY : Tile/fast
+
+#=============================================================================
+# Target rules for targets named GameState
+
+# Build rule for target.
+GameState: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 GameState
+.PHONY : GameState
+
+# fast build rule for target.
+GameState/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GameState.dir\build.make CMakeFiles/GameState.dir/build
+.PHONY : GameState/fast
 
 #=============================================================================
 # Target rules for targets named Toolbox

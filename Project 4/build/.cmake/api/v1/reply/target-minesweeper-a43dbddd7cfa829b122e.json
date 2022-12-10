@@ -33,13 +33,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 19,
+				"line" : 20,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 20,
+				"line" : 21,
 				"parent" : 0
 			},
 			{
@@ -98,19 +98,19 @@
 	[
 		{
 			"backtrace" : 2,
-			"id" : "Tile::@6890427a1f51a3e7e1df"
-		},
-		{
-			"backtrace" : 2,
 			"id" : "Button::@6890427a1f51a3e7e1df"
 		},
 		{
 			"backtrace" : 2,
-			"id" : "Toolbox::@6890427a1f51a3e7e1df"
+			"id" : "Tile::@6890427a1f51a3e7e1df"
 		},
 		{
 			"backtrace" : 2,
 			"id" : "GameState::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "Toolbox::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "minesweeper::@6890427a1f51a3e7e1df",
